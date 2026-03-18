@@ -422,11 +422,6 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <None Include="bin\Skybox.hlsl">
-      <FileType>Document</FileType>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="Imgui\imgui-docking-znly-docking\backends\imgui_impl_dx11.cpp" />
     <ClCompile Include="Imgui\imgui-docking-znly-docking\backends\imgui_impl_win32.cpp" />
     <ClCompile Include="Imgui\imgui-docking-znly-docking\imgui.cpp" />

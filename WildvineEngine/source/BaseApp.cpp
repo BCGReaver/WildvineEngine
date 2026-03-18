@@ -133,35 +133,35 @@ BaseApp::init() {
 	if (!m_cyberGun.isNull()) {
 		// Crear vertex buffer y index buffer para el pistol
 		std::vector<MeshComponent> cyberGunMeshes;
-		m_model = new Model3D("CyberGun.fbx", ModelType::FBX);
+		m_model = new Model3D("Assets/Models/CyberGun.fbx", ModelType::FBX);
 		cyberGunMeshes = m_model->GetMeshes();
 
 		std::vector<Texture> cyberGunTextures;
-		hr = m_AlbedoSRV.init(m_device, "Textures/CyberGun/base.tga", PNG);
+		hr = m_AlbedoSRV.init(m_device, "Assets/Textures/CyberGun/base.tga", PNG);
 		if (FAILED(hr)) {
 			ERROR("Main", "InitDevice",
 				("Failed to initialize DrakePistol Texture. HRESULT: " + std::to_string(hr)).c_str());
 			return hr;
 		}
-		hr = m_MetallicSRV.init(m_device, "Textures/CyberGun/metallic.tga", PNG);
+		hr = m_MetallicSRV.init(m_device, "Assets/Textures/CyberGun/metallic.tga", PNG);
 		if (FAILED(hr)) {
 			ERROR("Main", "InitDevice",
 				("Failed to initialize DrakePistol Texture. HRESULT: " + std::to_string(hr)).c_str());
 			return hr;
 		}
-		hr = m_RoughnessSRV.init(m_device, "Textures/CyberGun/roughness.tga", PNG);
+		hr = m_RoughnessSRV.init(m_device, "Assets/Textures/CyberGun/roughness.tga", PNG);
 		if (FAILED(hr)) {
 			ERROR("Main", "InitDevice",
 				("Failed to initialize DrakePistol Texture. HRESULT: " + std::to_string(hr)).c_str());
 			return hr;
 		}
-		hr = m_AOSRV.init(m_device, "Textures/CyberGun/ao.tga", PNG);
+		hr = m_AOSRV.init(m_device, "Assets/Textures/CyberGun/ao.tga", PNG);
 		if (FAILED(hr)) {
 			ERROR("Main", "InitDevice",
 				("Failed to initialize DrakePistol Texture. HRESULT: " + std::to_string(hr)).c_str());
 			return hr;
 		}
-		hr = m_NormalSRV.init(m_device, "Textures/CyberGun/normal.tga", PNG);
+		hr = m_NormalSRV.init(m_device, "Assets/Textures/CyberGun/normal.tga", PNG);
 		if (FAILED(hr)) {
 			ERROR("Main", "InitDevice",
 				("Failed to initialize DrakePistol Texture. HRESULT: " + std::to_string(hr)).c_str());
