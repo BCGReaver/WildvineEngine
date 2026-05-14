@@ -1,3 +1,8 @@
+/**
+ * @file Transform.h
+ * @brief Declara la API de Transform dentro del subsistema ECS.
+ * @ingroup ecs
+ */
 #pragma once
 #include "Prerequisites.h"
 #include "EngineUtilities/Vectors/Vector3.h"
@@ -11,6 +16,7 @@ public:
                 rotation(), 
                 scale(), 
                 matrix(), 
+                worldMatrix(),
                 Component(ComponentType::TRANSFORM) {}
 
   // Métodos para inicialización, actualización, renderizado y destrucción
@@ -19,6 +25,7 @@ public:
   init() {
     scale.one();
     matrix = XMMatrixIdentity();
+    worldMatrix = XMMatrixIdentity();
   }
 
   // Actualiza el estado del objeto Transform basado en el tiempo transcurrido
@@ -34,6 +41,7 @@ public:
 
     // Componer la matriz final en el orden: scale -> rotation -> translation
     matrix = scaleMatrix * rotationMatrix * translationMatrix;
+    worldMatrix = matrix;
   }
 
   // Renderiza el objeto Transform
@@ -92,5 +100,8 @@ private:
   EU::Vector3 scale;     // Escala del objeto
 
 public:
-  XMMATRIX matrix;    // Matriz de transformación
+  XMMATRIX matrix;    // Matriz de transformación local
+  XMMATRIX worldMatrix; // Matriz de transformación world
 };
+
+

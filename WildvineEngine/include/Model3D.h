@@ -1,3 +1,8 @@
+/**
+ * @file Model3D.h
+ * @brief Declara la API de Model3D dentro del subsistema Core.
+ * @ingroup core
+ */
 #pragma once
 #include "Prerequisites.h"
 #include "IResource.h"
@@ -16,7 +21,6 @@ public:
 	Model3D(const std::string& name, ModelType modelType) 
 	: IResource(name), m_modelType(modelType), lSdkManager(nullptr), lScene(nullptr) {
 		SetType(ResourceType::Model3D);
-		load(name);
 	}
 
 	Model3D(const std::string& name,
@@ -30,7 +34,7 @@ public:
 		m_meshes.push_back(mesh);
 	}
 
-	~Model3D() = default;
+	~Model3D() override;
 
 	bool 
 	load(const std::string& path) override;
@@ -51,8 +55,11 @@ public:
 	bool
 	InitializeFBXManager();
 
-  std::vector<MeshComponent>
+	std::vector<MeshComponent>
 	LoadFBXModel(const std::string & filePath);
+
+	std::vector<MeshComponent>
+	LoadOBJModel(const std::string& filePath);
 
 	void 
   ProcessFBXNode(FbxNode* node);
@@ -65,6 +72,13 @@ public:
 
 	std::vector<std::string> 
   GetTextureFileNames() const { return textureFileNames; }
+
+private:
+	std::string GetBinaryCachePath() const;
+	bool IsBinaryCacheUpToDate(const std::string& sourcePath, const std::string& cachePath) const;
+	bool LoadBinaryCache(const std::string& cachePath);
+	bool SaveBinaryCache(const std::string& cachePath) const;
+
 private:
 	FbxManager* lSdkManager;
 	FbxScene* lScene;
@@ -73,3 +87,5 @@ public:
 	ModelType m_modelType;
 	std::vector<MeshComponent> m_meshes;
 };
+
+

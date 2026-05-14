@@ -1,3 +1,8 @@
+/**
+ * @file ShaderProgram.cpp
+ * @brief Implementa la logica de ShaderProgram dentro del subsistema Core.
+ * @ingroup core
+ */
 #include "ShaderProgram.h"
 #include "Device.h"
 #include "DeviceContext.h"
@@ -46,8 +51,7 @@ ShaderProgram::init(Device& device,
 }
 
 HRESULT 
-ShaderProgram::CreateInputLayout(Device& device, 
-	LayoutBuilder layoutBuilder) {
+ShaderProgram::CreateInputLayout(Device& device, LayoutBuilder layoutBuilder) {
 	if (!m_vertexShaderData) {
 		ERROR("ShaderProgram", "CreateInputLayout", "Vertex shader data is null.");
 		return E_POINTER;
@@ -249,3 +253,4 @@ ShaderProgram::destroy() {
 	SAFE_RELEASE(m_vertexShaderData);
 	SAFE_RELEASE(m_pixelShaderData);
 }
+

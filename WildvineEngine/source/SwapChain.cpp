@@ -1,3 +1,8 @@
+/**
+ * @file SwapChain.cpp
+ * @brief Implementa la logica de SwapChain dentro del subsistema Core.
+ * @ingroup core
+ */
 #include "SwapChain.h"
 #include "Device.h"
 #include "DeviceContext.h"
@@ -164,7 +169,7 @@ SwapChain::present() {
 }
 
 HRESULT 
-SwapChain::resizeBuffers(UINT width, UINT height) {
+SwapChain::resizeBuffers(unsigned int width, unsigned int height) {
   if (!m_swapChain) {
     ERROR("SwapChain", "resizeBuffers", "Swap chain is not initialized.");
     return E_POINTER;
@@ -209,3 +214,5 @@ HRESULT SwapChain::getBackBuffer(Texture& backBuffer)
 
   return S_OK;
 }
+
+

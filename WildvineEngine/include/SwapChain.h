@@ -1,3 +1,8 @@
+/**
+ * @file SwapChain.h
+ * @brief Declara la API de SwapChain dentro del subsistema Core.
+ * @ingroup core
+ */
 #pragma once
 #include "Prerequisites.h"
 
@@ -94,7 +99,7 @@ public:
   present();
 
   HRESULT 
-  resizeBuffers(UINT width, UINT height);
+  resizeBuffers(unsigned int width, unsigned int height);
   
   HRESULT 
   getBackBuffer(Texture& backBuffer);
@@ -143,3 +148,5 @@ private:
    */
   IDXGIFactory* m_dxgiFactory = nullptr;
 };
+
+

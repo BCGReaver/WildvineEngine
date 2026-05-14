@@ -1,4 +1,9 @@
-﻿#pragma once
+/**
+ * @file RenderScene.h
+ * @brief Declara la API de RenderScene dentro del subsistema Rendering.
+ * @ingroup rendering
+ */
+#pragma once
 #include "Prerequisites.h"
 #include "Rendering/RenderTypes.h"
 
@@ -6,91 +11,24 @@ class Skybox;
 
 /**
  * @class RenderScene
- * @brief Contenedor de todo lo que se va a renderizar en un frame.
+ * @brief Contenedor temporal con los elementos visibles de un frame.
  *
- * @details
- *  Este es básicamente el "snapshot" del mundo para el renderer.
- *
- *  Aquí NO hay lógica de juego, solo datos listos para dibujar.
- *
- *  Piensa en esto como:
- *   👉 "la lista final que el renderer necesita"
- *
- *  Normalmente se llena desde:
- *   - ECS
- *   - SceneGraph
- *   - Sistemas de luces
- *
- *  Y luego el renderer (ForwardRenderer) lo consume.
+ * `RenderScene` funciona como estructura intermedia entre el `SceneGraph` y el
+ * renderer. Agrupa objetos por tipo de cola, luces direccionales y skybox activo.
  */
 class
-	RenderScene {
+RenderScene {
 public:
-
 	/**
-	 * @brief Limpia todos los datos del frame.
-	 *
-	 * @details
-	 *  Esto se llama cada frame antes de volver a llenarlo.
-	 *
-	 *  Importante para evitar:
-	 *   - Datos duplicados
-	 *   - Render basura
+	 * @brief Limpia todas las colecciones para preparar un nuevo frame.
 	 */
-	void
-		clear() {
-
-		opaqueObjects.clear();
-		transparentObjects.clear();
-		directionalLights.clear();
-		skybox = nullptr;
-	}
+	void clear();
 
 public:
-
-	/**
-	 * @brief Lista de objetos opacos.
-	 *
-	 * @details
-	 *  Estos se renderizan primero porque:
-	 *   - No usan blending
-	 *   - Permiten optimizaciones como early-z
-	 */
-	std::vector<RenderObject> opaqueObjects;
-
-
-	/**
-	 * @brief Lista de objetos transparentes.
-	 *
-	 * @details
-	 *  Estos se renderizan después porque:
-	 *   - Necesitan blending
-	 *   - Deben ordenarse por distancia (back-to-front)
-	 */
-	std::vector<RenderObject> transparentObjects;
-
-
-	/**
-	 * @brief Luces direccionales de la escena.
-	 *
-	 * @details
-	 *  Ejemplo:
-	 *   - Sol
-	 *   - Luz global
-	 *
-	 *  Estas afectan a todos los objetos.
-	 */
-	std::vector<LightData> directionalLights;
-
-
-	/**
-	 * @brief Skybox actual de la escena.
-	 *
-	 * @details
-	 *  Es el fondo del mundo:
-	 *   - Cielo
-	 *   - HDRI
-	 *   - Ambiente
-	 */
-	Skybox* skybox = nullptr;
+	std::vector<RenderObject> opaqueObjects;       ///< Objetos opacos listos para renderizar.
+	std::vector<RenderObject> transparentObjects;  ///< Objetos transparentes ordenables por distancia.
+	std::vector<LightData> directionalLights;      ///< Luces direccionales activas en la escena.
+	Skybox* skybox = nullptr;                      ///< Skybox activo para el frame actual.
 };
+
+
