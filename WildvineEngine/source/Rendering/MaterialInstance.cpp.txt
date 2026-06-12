@@ -3,7 +3,7 @@
 #include "Texture.h"
 
 void
-MaterialInstance::bindTextures(DeviceContext& deviceContext) const {
+MaterialInstance::bindTextures(DeviceContext & deviceContext) const {
 	ID3D11ShaderResourceView* nullTextures[6] = { nullptr, nullptr, nullptr, nullptr, nullptr, nullptr };
 	deviceContext.PSSetShaderResources(0, 6, nullTextures);
 

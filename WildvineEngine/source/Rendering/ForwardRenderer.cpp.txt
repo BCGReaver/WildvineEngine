@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @file ForwardRenderer.cpp
  * @brief Implementa la logica de ForwardRenderer dentro del subsistema Rendering.
  * @ingroup rendering

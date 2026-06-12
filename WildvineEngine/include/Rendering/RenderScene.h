@@ -1,8 +1,3 @@
-/**
- * @file RenderScene.h
- * @brief Declara la API de RenderScene dentro del subsistema Rendering.
- * @ingroup rendering
- */
 #pragma once
 #include "Prerequisites.h"
 #include "Rendering/RenderTypes.h"
@@ -10,25 +5,45 @@
 class Skybox;
 
 /**
- * @class RenderScene
- * @brief Contenedor temporal con los elementos visibles de un frame.
- *
- * `RenderScene` funciona como estructura intermedia entre el `SceneGraph` y el
- * renderer. Agrupa objetos por tipo de cola, luces direccionales y skybox activo.
+ * @brief Clase que guarda todo lo que se va a dibujar en un frame.
+ * Es literalmente un contenedor. El motor recolecta todos los objetos visibles
+ * de tu nivel y los acomoda aquí para pasárselos al renderizador en charola de plata.
  */
 class
-RenderScene {
+  RenderScene {
 public:
-	/**
-	 * @brief Limpia todas las colecciones para preparar un nuevo frame.
-	 */
-	void clear();
+
+  /**
+   * @brief Limpia todas las listas de objetos y luces.
+   * Se tiene que llamar al final o al inicio de cada frame para no dibujar
+   * lo del frame pasado y evitar que la memoria explote.
+   */
+  void
+    clear();
 
 public:
-	std::vector<RenderObject> opaqueObjects;       ///< Objetos opacos listos para renderizar.
-	std::vector<RenderObject> transparentObjects;  ///< Objetos transparentes ordenables por distancia.
-	std::vector<LightData> directionalLights;      ///< Luces direccionales activas en la escena.
-	Skybox* skybox = nullptr;                      ///< Skybox activo para el frame actual.
+
+  // ---------------------------------------------------------
+  // VARIABLES PÚBLICAS (Listas de dibujo)
+  // ---------------------------------------------------------
+
+  /** * @brief Lista de todos los modelos sólidos y opacos (como paredes, pisos, personajes).
+   * Estos se dibujan primero porque son los más fáciles y tapan lo que hay atrás.
+   */
+  std::vector<RenderObject> opaqueObjects;
+
+  /** * @brief Lista de los objetos con transparencia (como ventanas o agua).
+   * Estos se dibujan después de los opacos para que la mezcla de colores se vea bien.
+   */
+  std::vector<RenderObject> transparentObjects;
+
+  /** * @brief Lista de las luces direccionales.
+   * Básicamente las luces que simulan el sol o la luna, que pegan parejo en toda la escena.
+   */
+  std::vector<LightData> directionalLights;
+
+  /** * @brief Puntero al Skybox actual.
+   * El cubo gigante que envuelve tu nivel y tiene la textura del cielo.
+   */
+  Skybox* skybox = nullptr;
 };
-
-

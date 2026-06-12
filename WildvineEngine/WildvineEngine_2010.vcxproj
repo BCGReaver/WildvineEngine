@@ -494,12 +494,6 @@
     <ClInclude Include="include\EngineUtilities\Memory\TWeakPointer.h" />
     <ClInclude Include="include\EngineUtilities\Utilities\Camera.h" />
     <ClInclude Include="include\EngineUtilities\Utilities\EditorViewportPass.h" />
-    <ClInclude Include="include\Rendering\ForwardRenderer.h" />
-    <ClInclude Include="include\Rendering\Material.h" />
-    <ClInclude Include="include\Rendering\MaterialInstance.h" />
-    <ClInclude Include="include\Rendering\Mesh.h" />
-    <ClInclude Include="include\Rendering\RenderScene.h" />
-    <ClInclude Include="include\Rendering\RenderTypes.h" />
     <ClInclude Include="include\EngineUtilities\Utilities\EngineMath.h" />
     <ClInclude Include="include\EngineUtilities\Utilities\LayoutBuilder.h" />
     <ClInclude Include="include\EngineUtilities\Utilities\Skybox.h" />
@@ -512,6 +506,14 @@
     <ClInclude Include="include\Model3D.h" />
     <ClInclude Include="include\Prerequisites.h" />
     <ClInclude Include="include\RasterizerState.h" />
+    <ClInclude Include="include\Rendering\DeferredRenderer.h" />
+    <ClInclude Include="include\Rendering\ForwardRendered.h" />
+    <ClInclude Include="include\Rendering\ISceneRenderer.h" />
+    <ClInclude Include="include\Rendering\Material.h" />
+    <ClInclude Include="include\Rendering\MaterialInstance.h" />
+    <ClInclude Include="include\Rendering\Mesh.h" />
+    <ClInclude Include="include\Rendering\RenderScene.h" />
+    <ClInclude Include="include\Rendering\RenderTypes.h" />
     <ClInclude Include="include\RenderTargetView.h" />
     <ClInclude Include="include\ResourceManager.h" />
     <ClInclude Include="include\SamplerState.h" />
