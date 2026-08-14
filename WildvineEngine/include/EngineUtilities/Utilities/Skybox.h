@@ -34,7 +34,7 @@ public:
 	render(DeviceContext& deviceContext);
 
 	void
-	destroy() {}
+	destroy();
 
 private:
 	ShaderProgram m_shaderProgram;
@@ -42,7 +42,7 @@ private:
 	SamplerState m_samplerState;
 	RasterizerState m_rasterizerState;
 	DepthStencilState m_depthStencilState;
-	Texture m_skyboxTexture;
+	Texture* m_skyboxTexture = nullptr; // non-owning: propiedad de BaseApp
 	Model3D* m_cubeModel = nullptr;
 	EU::TSharedPointer<Actor> m_skybox;
 

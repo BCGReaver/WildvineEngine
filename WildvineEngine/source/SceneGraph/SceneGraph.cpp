@@ -96,7 +96,7 @@ SceneGraph::removeEntity(Entity* e) {
 
 bool 
 SceneGraph::isAncestor(Entity* possibleAncestor, Entity* node) const {
-	// Recorre hacia arriba desde node: si encuentra possibleAncestor, hay ciclo
+	// Recorre hacia arriba desde node: si encuentra possibleAncestor, hay ciclo.
 	if (!possibleAncestor || !node) return false;
 
 	auto h = node->getComponent<HierarchyComponent>();
@@ -104,10 +104,8 @@ SceneGraph::isAncestor(Entity* possibleAncestor, Entity* node) const {
 	{
 		if (h->m_parent == possibleAncestor) return true;
 		node = h->m_parent;
-		EU::TSharedPointer<HierarchyComponent> h;
-		if (node)
-			h = node->getComponent<HierarchyComponent>();
-
+		h = node ? node->getComponent<HierarchyComponent>()
+			: EU::TSharedPointer<HierarchyComponent>();
 	}
 	return false;
 }

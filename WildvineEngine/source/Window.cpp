@@ -75,6 +75,18 @@ Window::render() {
 
 void 
 Window::destroy() {
+  if (m_hWnd && IsWindow(m_hWnd)) {
+    DestroyWindow(m_hWnd);
+  }
+  m_hWnd = nullptr;
+
+  if (m_hInst) {
+    UnregisterClass("TutorialWindowClass", m_hInst);
+  }
+  m_hInst = nullptr;
+  m_width = 0;
+  m_height = 0;
+  SetRectEmpty(&m_rect);
 }
 
 

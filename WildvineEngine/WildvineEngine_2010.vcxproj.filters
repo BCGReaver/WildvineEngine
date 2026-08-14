@@ -57,21 +57,18 @@
     <Filter Include="source\Rendering">
       <UniqueIdentifier>{8fffa7c6-e8ff-4f2e-9f93-f8176baf9f5f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="source\GUI">
+      <UniqueIdentifier>{975d861f-7079-4ab0-b26e-039fbab8c1a9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WildvineEngine.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
-    <ClCompile Include="source\Window.cpp">
       <Filter>source</Filter>
     </ClCompile>
     <ClCompile Include="source\Device.cpp">
       <Filter>source</Filter>
     </ClCompile>
     <ClCompile Include="source\DeviceContext.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
-    <ClCompile Include="source\Texture.cpp">
       <Filter>source</Filter>
     </ClCompile>
     <ClCompile Include="source\SwapChain.cpp">
@@ -98,16 +95,7 @@
     <ClCompile Include="source\SamplerState.cpp">
       <Filter>source</Filter>
     </ClCompile>
-    <ClCompile Include="source\BaseApp.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
     <ClCompile Include="source\Model3D.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
-    <ClCompile Include="source\ECS\Actor.cpp">
-      <Filter>source\ECS</Filter>
-    </ClCompile>
-    <ClCompile Include="source\GUI\GUI.cpp">
       <Filter>source</Filter>
     </ClCompile>
     <ClCompile Include="source\Rendering\ForwardRenderer.cpp">
@@ -143,13 +131,7 @@
     <ClCompile Include="Imgui\ImGuizmo\ImGuizmo.cpp">
       <Filter>imgui\source</Filter>
     </ClCompile>
-    <ClCompile Include="source\SceneGraph\SceneGraph.cpp">
-      <Filter>source\SceneGraph</Filter>
-    </ClCompile>
     <ClCompile Include="source\Camera.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
-    <ClCompile Include="source\Skybox.cpp">
       <Filter>source</Filter>
     </ClCompile>
     <ClCompile Include="source\RasterizerState.cpp">
@@ -159,6 +141,27 @@
       <Filter>source</Filter>
     </ClCompile>
     <ClCompile Include="source\EditorViewportPass.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Skybox.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="source\BaseApp.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SceneGraph\SceneGraph.cpp">
+      <Filter>source\SceneGraph</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ECS\Actor.cpp">
+      <Filter>source\ECS</Filter>
+    </ClCompile>
+    <ClCompile Include="source\GUI\GUI.cpp">
+      <Filter>source\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Texture.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Window.cpp">
       <Filter>source</Filter>
     </ClCompile>
   </ItemGroup>
@@ -177,9 +180,6 @@
     <ResourceCompile Include="WildvineEngine.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
-    <ClInclude Include="include\Window.h">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="include\Device.h">
       <Filter>include</Filter>
     </ClInclude>
@@ -315,9 +315,6 @@
     <ClInclude Include="include\EngineUtilities\Utilities\Camera.h">
       <Filter>include\Utilities</Filter>
     </ClInclude>
-    <ClInclude Include="include\EngineUtilities\Utilities\Skybox.h">
-      <Filter>include\Utilities</Filter>
-    </ClInclude>
     <ClInclude Include="include\RasterizerState.h">
       <Filter>include</Filter>
     </ClInclude>
@@ -353,6 +350,12 @@
     </ClInclude>
     <ClInclude Include="include\Rendering\RenderTypes.h">
       <Filter>include\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="include\EngineUtilities\Utilities\Skybox.h">
+      <Filter>include\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Window.h">
+      <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

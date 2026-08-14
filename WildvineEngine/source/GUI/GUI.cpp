@@ -720,11 +720,20 @@ GUI::inspectorGeneral(EU::TSharedPointer<Actor> actor) {
 
 void
 GUI::inspectorContainer(EU::TSharedPointer<Actor> actor) {
+	if (!actor) {
+		return;
+	}
+
+	auto transform = actor->getComponent<Transform>();
+	if (!transform) {
+		return;
+	}
+
 	//ImGui::Begin("Transform");
 	// Draw the structure
-	vec3Control("Position", const_cast<float*>(actor->getComponent<Transform>()->getPosition().data()), 0.0f, 78.0f, false);
-	vec3Control("Rotation", const_cast<float*>(actor->getComponent<Transform>()->getRotation().data()), 0.0f, 78.0f, true);
-	vec3Control("Scale", const_cast<float*>(actor->getComponent<Transform>()->getScale().data()), 1.0f, 78.0f, false);
+	vec3Control("Position", const_cast<float*>(transform->getPosition().data()), 0.0f, 78.0f, false);
+	vec3Control("Rotation", const_cast<float*>(transform->getRotation().data()), 0.0f, 78.0f, true);
+	vec3Control("Scale", const_cast<float*>(transform->getScale().data()), 1.0f, 78.0f, false);
 
 	//ImGui::End();
 }

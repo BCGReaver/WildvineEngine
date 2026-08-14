@@ -12,8 +12,8 @@
 HRESULT
 Skybox::init(Device& device, DeviceContext* deviceContext, Texture& cubemap) {
 	destroy();
-	// Cargar el cubemap
-	m_skyboxTexture = cubemap;
+	// Referencia no propietaria al cubemap administrado por el llamador.
+	m_skyboxTexture = &cubemap;
 
 	// 1) Geometría (cubo)
 	 // Cubo unitario centrado en origen. (tamaño no importa si quitas traslación)
@@ -70,6 +70,7 @@ Skybox::init(Device& device, DeviceContext* deviceContext, Texture& cubemap) {
 	if (FAILED(hr)) {
 		ERROR("Skybox", "init",
 			("Failed to initialize ShaderProgram. HRESULT: " + std::to_string(hr)).c_str());
+		destroy();
 		return hr;
 	}
 
@@ -78,6 +79,7 @@ Skybox::init(Device& device, DeviceContext* deviceContext, Texture& cubemap) {
 	if (FAILED(hr)) {
 		ERROR("Skybox", "init",
 			("Failed to initialize NeverChanges Buffer. HRESULT: " + std::to_string(hr)).c_str());
+		destroy();
 		return hr;
 	}
 
@@ -85,12 +87,16 @@ Skybox::init(Device& device, DeviceContext* deviceContext, Texture& cubemap) {
 	hr = m_samplerState.init(device);
 	if (FAILED(hr)) {
 		ERROR("Skybox", "init", "Failed to create new SamplerState");
+		destroy();
+		return hr;
 	}
 
 	// Init Rasterizer
 	hr = m_rasterizerState.init(device, D3D11_FILL_SOLID, D3D11_CULL_FRONT, false, true);
 	if (FAILED(hr)) {
 		ERROR("Skybox", "init", "Failed to create new RasterizerState");
+		destroy();
+		return hr;
 	}
 
 	// Init DepthStencilState
@@ -99,6 +105,8 @@ Skybox::init(Device& device, DeviceContext* deviceContext, Texture& cubemap) {
 															  D3D11_COMPARISON_LESS_EQUAL);
 	if (FAILED(hr)) {
 		ERROR("Skybox", "init", "Failed to create new DepthStencilState");
+		destroy();
+		return hr;
 	}
 
 	return S_OK;
@@ -116,7 +124,7 @@ void Skybox::update(DeviceContext& deviceContext, Camera& camera) {
 void
 Skybox::render(DeviceContext& deviceContext) {
 	// Guard: si no se inicializó bien, no intentes renderizar
-	if (!m_cubeModel || !m_skyboxTexture.m_textureFromImg) return;
+	if (!m_cubeModel || !m_skyboxTexture || !m_skyboxTexture->m_textureFromImg) return;
 
 	// 1) States del skybox
 	m_rasterizerState.render(deviceContext);
@@ -129,7 +137,7 @@ Skybox::render(DeviceContext& deviceContext) {
 	m_samplerState.render(deviceContext, 10, 1);
 
 	// 4) IMPORTANTÍSIMO: bindea cubemap ANTES del draw (slot 10)
-	m_skyboxTexture.render(deviceContext, 10, 1);
+	m_skyboxTexture->render(deviceContext, 10, 1);
 
 	// 5) Asegura IA (topology + VB/IB) antes del DrawIndexed
 	m_skybox->renderForSkybox(deviceContext);
@@ -143,3 +151,22 @@ Skybox::render(DeviceContext& deviceContext) {
 }
 
 
+
+void
+Skybox::destroy() {
+	if (m_skybox) {
+		m_skybox->destroy();
+		m_skybox.reset();
+	}
+
+	delete m_cubeModel;
+	m_cubeModel = nullptr;
+
+	m_depthStencilState.destroy();
+	m_rasterizerState.destroy();
+	m_samplerState.destroy();
+	m_constantBuffer.destroy();
+	m_shaderProgram.destroy();
+
+	m_skyboxTexture = nullptr;
+}

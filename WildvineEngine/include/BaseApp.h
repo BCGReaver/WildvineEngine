@@ -167,8 +167,8 @@ private:
 	EU::TSharedPointer<Actor> m_directionalLightActor;
 
 	
-	Model3D*														m_model;
-	Model3D*														m_drakefireModel = nullptr;
+	Model3D* m_model = nullptr;
+	Model3D* m_drakefireModel = nullptr;
 
 	//CBChangeOnResize										cbChangesOnResize;
 	//CBNeverChanges											cbNeverChanges;

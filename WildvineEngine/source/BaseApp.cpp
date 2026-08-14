@@ -25,8 +25,8 @@ BaseApp::awake() {
 int
 BaseApp::run(HINSTANCE hInst, int nCmdShow) {
 	// 1) Initialize Window
-	if (FAILED(m_window.init(hInst, nCmdShow, WndProc, this))) {
-		ERROR("Main", "Run", "Failed to initialize window.");
+	if (FAILED(init())) {
+		ERROR("Main", "Run", "Failed to initialize device and device context.");
 		return 0;
 	}
 	// 2) Awake Application
@@ -135,7 +135,12 @@ BaseApp::init() {
 		"Skybox/cubemap_4.png",
 		"Skybox/cubemap_5.png"
 	};
-	m_skyboxTex.CreateCubemap(m_device, m_deviceContext, faces, false);
+	hr = m_skyboxTex.CreateCubemap(m_device, m_deviceContext, faces, false);
+	if (FAILED(hr)) {
+		ERROR("Main", "InitDevice",
+			("Failed to initialize skybox cubemap. HRESULT: " + std::to_string(hr)).c_str());
+		return hr;
+	}
 
 	// Set CyberGun Actor
 	m_cyberGun = EU::MakeShared<Actor>(m_device);
@@ -279,7 +284,12 @@ BaseApp::init() {
 	m_constantBufferStruct.LightDir = EU::Vector3(-0.20f, -1.0f, 1.0f);
 
 	// Initialize the Skybox pass -> Carga de textura + creacion de buffers/shaders especificos para el skybox
-	m_skybox.init(m_device, &m_deviceContext, m_skyboxTex);
+	hr = m_skybox.init(m_device, &m_deviceContext, m_skyboxTex);
+	if (FAILED(hr)) {
+		ERROR("Main", "InitDevice",
+			("Failed to initialize skybox pass. HRESULT: " + std::to_string(hr)).c_str());
+		return hr;
+	}
 
 	// Initialize default states (Rasterizer, DepthStencil)
 	hr = m_defaultRasterizer.init(m_device, D3D11_FILL_SOLID, D3D11_CULL_BACK, false, true);
@@ -572,8 +582,21 @@ void
 BaseApp::destroy() {
 	if (m_deviceContext.m_deviceContext) m_deviceContext.m_deviceContext->ClearState();
 	m_sceneGraph.destroy();
+	m_renderScene.clear();
+
+	for (auto& actor : m_actors) {
+		if (actor) {
+			actor->destroy();
+		}
+	}
+	if (m_directionalLightActor) {
+		m_directionalLightActor->destroy();
+	}
+
 	m_editorViewportPass.destroy();
 	m_forwardRenderer.destroy();
+	m_skybox.destroy();
+	m_skyboxTex.destroy();
 	m_cyberGunRenderMesh.destroy();
 	m_drakefireRenderMesh.destroy();
 	m_AlbedoSRV.destroy();
@@ -590,6 +613,7 @@ BaseApp::destroy() {
 	m_defaultRasterizer.destroy();
 	m_defaultDepthStencil.destroy();
 	m_defaultSampler.destroy();
+	m_constantBuffer.destroy();
 	//m_cbNeverChanges.destroy();
 	//m_cbChangeOnResize.destroy();
 	m_shaderProgram.destroy();
@@ -606,8 +630,15 @@ BaseApp::destroy() {
 	m_model = nullptr;
 	delete m_drakefireModel;
 	m_drakefireModel = nullptr;
+
+	m_actors.clear();
+	m_cyberGun.reset();
+	m_drakefirePistol.reset();
+	m_directionalLightActor.reset();
+
 	m_deviceContext.destroy();
 	m_device.destroy();
+	m_window.destroy();
 }
 
 LRESULT

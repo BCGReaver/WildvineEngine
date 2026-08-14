@@ -82,7 +82,12 @@ Actor::update(float deltaTime, DeviceContext& deviceContext) {
 	}
 
 	// Update the model buffer
-	m_model.mWorld = XMMatrixTranspose(getComponent<Transform>()->matrix);
+	auto transform = getComponent<Transform>();
+	if (!transform) {
+		ERROR("Actor", "update", "Transform component is missing.");
+		return;
+	}
+	m_model.mWorld = XMMatrixTranspose(transform->matrix);
 	m_model.vMeshColor = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 	// Update the constant buffer
 	m_modelBuffer.update(deviceContext, nullptr, 0, nullptr, &m_model, 0, 0);
@@ -146,32 +151,45 @@ Actor::destroy() {
 	//m_rasterizer.destroy();
 	//m_blendstate.destroy();
 	m_sampler.destroy();
+
+	m_vertexBuffers.clear();
+	m_indexBuffers.clear();
+	m_textures.clear();
+	m_meshes.clear();
 }
 
 void
 Actor::setMesh(Device& device, std::vector<MeshComponent> meshes) {
-	m_meshes = meshes;
-	HRESULT hr;
-	for (auto& mesh : m_meshes) {
-		// Crear vertex buffer
+	for (auto& vertexBuffer : m_vertexBuffers) {
+		vertexBuffer.destroy();
+	}
+	for (auto& indexBuffer : m_indexBuffers) {
+		indexBuffer.destroy();
+	}
+	m_vertexBuffers.clear();
+	m_indexBuffers.clear();
+	m_meshes.clear();
+
+	for (auto& mesh : meshes) {
 		Buffer vertexBuffer;
-		hr = vertexBuffer.init(device, mesh, D3D11_BIND_VERTEX_BUFFER);
+		HRESULT hr = vertexBuffer.init(device, mesh, D3D11_BIND_VERTEX_BUFFER);
 		if (FAILED(hr)) {
 			ERROR("Actor", "setMesh", "Failed to create new vertexBuffer");
-		}
-		else {
-			m_vertexBuffers.push_back(vertexBuffer);
+			continue;
 		}
 
-		// Crear index buffer
 		Buffer indexBuffer;
 		hr = indexBuffer.init(device, mesh, D3D11_BIND_INDEX_BUFFER);
 		if (FAILED(hr)) {
 			ERROR("Actor", "setMesh", "Failed to create new indexBuffer");
+			vertexBuffer.destroy();
+			continue;
 		}
-		else {
-			m_indexBuffers.push_back(indexBuffer);
-		}
+
+		// Mantener mesh/VB/IB alineados: solo se agrega el conjunto completo si ambos buffers existen.
+		m_meshes.push_back(mesh);
+		m_vertexBuffers.push_back(vertexBuffer);
+		m_indexBuffers.push_back(indexBuffer);
 	}
 }
 
